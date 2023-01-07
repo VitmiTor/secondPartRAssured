@@ -9,17 +9,17 @@ import java.util.List;
 
 public class ArticlesResponse extends BaseModel {
     @JsonProperty("title")
-    private String title;
+    private final String title;
     @JsonProperty("description")
-    private String description;
+    private final String description;
     @JsonProperty("body")
-    private String body;
+    private final String body;
     @JsonProperty("tagList")
-    private List<String> taglist;
+    private final List<String> taglist;
 
     public ArticlesResponse() {
-        var faker = new Faker();
-        title = faker.elderScrolls().quote();
+        final var faker = new Faker();
+        title = faker.lorem().sentence();
         description = faker.princessBride().quote();
         body = faker.artist().name();
         taglist = Arrays.asList("fideo", "jamon", "durazno");

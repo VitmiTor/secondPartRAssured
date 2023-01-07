@@ -4,32 +4,32 @@ import api.LoginApi;
 import api.SignUpApi;
 import base.BaseTest;
 import io.restassured.response.Response;
-import models.login.RootLoginResponse;
+import models.login.LoginRootPayload;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.Matchers.lessThan;
 
-public class HealthCheck extends BaseTest {
-
+public class HealthCheckTests extends BaseTest {
     private Response response;
 
     @Test
-    public void SignUp() {
-
-        var signUpApi = new SignUpApi(false);
+    public void signUpTest() {
+        final var signUpApi = new SignUpApi();
 
         response = signUpApi.callSignUp();
-        final var responseBody = response.then().assertThat()
+
+        response.then().assertThat()
                 .statusCode(200)
                 .time(lessThan(3000L));
     }
 
     @Test
-    public void loginUser() {
-        var loginApi = new LoginApi(false);
-        final var rootLogin = new RootLoginResponse();
-        response = loginApi.loginIn(rootLogin);
-        final var responseBody = response.then().assertThat()
+    public void loginTest() {
+        final var loginApi = new LoginApi();
+
+        response = loginApi.loginIn(new LoginRootPayload());
+
+        response.then().assertThat()
                 .statusCode(200)
                 .time(lessThan(3000L));
     }

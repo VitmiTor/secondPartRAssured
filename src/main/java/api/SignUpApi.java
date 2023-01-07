@@ -2,23 +2,20 @@ package api;
 
 import io.restassured.http.Method;
 import io.restassured.response.Response;
-import models.RootSignUP;
+import models.register.RegisterRootPayload;
 
 public class SignUpApi extends BaseApi {
     private final String path = "users";
-    private Response response;
 
-    public SignUpApi(boolean isAuth) {
-        super(isAuth);
+    public SignUpApi() {
+        super(false);
     }
 
     public Response callSignUp() {
         logs.debug("Creating User");
 
-        RootSignUP rootSignUP = new RootSignUP();
-
         return setResourcePath(path)
-                .setRequestBody(rootSignUP)
+                .setRequestBody(new RegisterRootPayload())
                 .apiCallManager(Method.POST);
     }
 }

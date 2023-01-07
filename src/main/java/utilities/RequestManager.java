@@ -1,59 +1,60 @@
 package utilities;
 
 import base.BaseModel;
+import data.Credentials;
 import io.restassured.RestAssured;
-import io.restassured.authentication.AuthenticationScheme;
-import io.restassured.authentication.PreemptiveOAuth2HeaderScheme;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
+import java.util.HashMap;
+
 public class RequestManager {
     private final RequestSpecification requestSpecification;
     private final String baseUrl = "http://localhost:8080/api";
     private final Logs logs = new Logs();
-    private boolean isAuth;
 
 
-    public RequestManager(boolean isAuth) {
-        this.isAuth = isAuth;
-        this.requestSpecification = buildRequestSpecification();
+    public RequestManager() {
+        this(false);
     }
 
-    private RequestSpecification buildRequestSpecification() {
+    public RequestManager(boolean isAuth) {
+        if (isAuth) {
+            this.requestSpecification = buildRequestSpecificationAuth();
+        } else {
+            this.requestSpecification = buildRequestSpecificationNoAuth();
+        }
+    }
 
-        var specCustom = RestAssured.requestSpecification =
+    private RequestSpecification buildRequestSpecificationNoAuth() {
+        return RestAssured.given().spec(buildSpecBuilder()).filter(new RequestFilter());
+    }
+
+    private RequestSpecification buildRequestSpecificationAuth() {
+        final var authMap = getAuthHeader();
+
+        return RestAssured.given().headers(authMap).spec(buildSpecBuilder()).filter(new RequestFilter());
+    }
+
+    private RequestSpecification buildSpecBuilder() {
+        return RestAssured.requestSpecification =
                 new RequestSpecBuilder()
                         .setBaseUri(baseUrl)
                         .setContentType(ContentType.JSON)
                         .build();
-
-        RestAssured.authentication = oauth2();
-        return RestAssured.given().spec(specCustom).filter(new RequestFilter());
     }
 
-    private void assignAuth() {
-        if (isAuth) {
-            logs.debug("Authentication login Oauth2.0");
-            //var loginUp = new LoginApi(false);
-            //var token = loginUp.extractToken();
+    private HashMap<String, String> getAuthHeader() {
+        logs.debug("Authentication login Oauth2.0");
+        final var token = Credentials.getToken();
 
-            final var authSchema = new PreemptiveOAuth2HeaderScheme();
-            authSchema.setAccessToken("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZGVsbDQxIn0.BcQc2LLusMwjUn0QHl2ykoxmykIAdbBFz4DBTfPJi3Q");
-            logs.debug("setting the token");
-            RestAssured.authentication = authSchema;
-        } else {
-            RestAssured.authentication = RestAssured.DEFAULT_AUTH;
-        }
-    }
+        final var authMap = new HashMap<String, String>();
+        authMap.put("Authorization", String.format("Token %s", token));
 
-    public static AuthenticationScheme oauth2() {
-        var schemeToken = new PreemptiveOAuth2HeaderScheme();
-        System.out.println("Setting token");
-        schemeToken.setAccessToken("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZGVsbDQxIn0.BcQc2LLusMwjUn0QHl2ykoxmykIAdbBFz4DBTfPJi3Q");
-        return schemeToken;
+        return authMap;
     }
 
     public void setRequestBody(BaseModel baseModel) {
@@ -69,6 +70,11 @@ public class RequestManager {
     public void setPathParameter(String key, String value) {
         logs.debug("Setting path Parameter " + value);
         requestSpecification.pathParam(key, value);
+    }
+
+    public void setHeader(String key, String value) {
+        logs.debug("Setting header " + value);
+        requestSpecification.headers(key, value);
     }
 
     public Response callApi(Method method) {

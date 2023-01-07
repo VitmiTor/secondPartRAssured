@@ -5,7 +5,6 @@ import io.restassured.response.Response;
 import models.articles.RootArticleResponse;
 
 public class ArticleApi extends BaseApi {
-
     private final String path = "articles";
 
     public ArticleApi(boolean isAuth) {

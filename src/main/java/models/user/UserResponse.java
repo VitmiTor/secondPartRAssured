@@ -1,8 +1,8 @@
-package models;
+package models.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class SignUpAndLoginResponse {
+public class UserResponse {
     @JsonProperty("email")
     private String email;
     @JsonProperty("token")
@@ -13,14 +13,6 @@ public class SignUpAndLoginResponse {
     private String bio;
     @JsonProperty("image")
     private String image;
-
-    public SignUpAndLoginResponse() {
-        this.email = email;
-        this.token = token;
-        this.username = username;
-        this.bio = bio;
-        this.image = image;
-    }
 
     public String getEmail() {
         return email;

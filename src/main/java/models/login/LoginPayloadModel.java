@@ -2,17 +2,17 @@ package models.login;
 
 import base.BaseModel;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import data.Credentials;
 
-
-public class LoginResponse extends BaseModel {
+public class LoginPayloadModel extends BaseModel {
     @JsonProperty("email")
-    private String email;
+    private final String email;
     @JsonProperty("password")
-    private String password;
+    private final String password;
 
-    public LoginResponse() {
-        this.email = "pikachurina@yopmail.com";
-        this.password = "password";
+    public LoginPayloadModel() {
+        email = Credentials.getEmail();
+        password = Credentials.getPassword();
     }
 
     public String getEmail() {

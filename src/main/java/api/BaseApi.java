@@ -10,6 +10,10 @@ public class BaseApi {
     private final RequestManager requestManager;
     protected final Logs logs = new Logs();
 
+    public BaseApi() {
+        requestManager = new RequestManager();
+    }
+
     public BaseApi(boolean isAuth) {
         requestManager = new RequestManager(isAuth);
     }
