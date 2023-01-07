@@ -17,7 +17,7 @@ public class RequestFilter extends RequestLoggingFilter {
     public Response filter(FilterableRequestSpecification requestSpec,
                            FilterableResponseSpecification responseSpec,
                            FilterContext ctx) {
-        var response = ctx.next(requestSpec, responseSpec);
+        final var response = ctx.next(requestSpec, responseSpec);
         printLog(requestSpec, response);
         return response;
     }
