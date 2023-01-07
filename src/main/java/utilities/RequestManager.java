@@ -63,17 +63,17 @@ public class RequestManager {
     }
 
     public void serResourcePath(String value) {
-        logs.debug("Setting basepath " + value);
+        logs.debug("Setting Base Path: " + value);
         requestSpecification.basePath(value);
     }
 
     public void setPathParameter(String key, String value) {
-        logs.debug("Setting path Parameter " + value);
+        logs.debug("Setting Path Parameter " + value);
         requestSpecification.pathParam(key, value);
     }
 
     public void setHeader(String key, String value) {
-        logs.debug("Setting header " + value);
+        logs.debug("Setting Header " + value);
         requestSpecification.headers(key, value);
     }
 

@@ -9,11 +9,12 @@ public class LoginApi extends BaseApi {
     private Response response;
 
     public LoginApi() {
-        super(false);
+        super();
     }
 
     public Response loginIn(LoginRootPayload loginRootPayload) {
-        logs.info("Login in to account");
+        logs.info("Login POST");
+        
         return setResourcePath(path)
                 .setRequestBody(loginRootPayload)
                 .apiCallManager(Method.POST);

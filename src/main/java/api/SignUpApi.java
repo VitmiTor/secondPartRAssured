@@ -8,11 +8,11 @@ public class SignUpApi extends BaseApi {
     private final String path = "users";
 
     public SignUpApi() {
-        super(false);
+        super();
     }
 
     public Response callSignUp() {
-        logs.debug("Creating User");
+        logs.debug("Sign Up POST");
 
         return setResourcePath(path)
                 .setRequestBody(new RegisterRootPayload())

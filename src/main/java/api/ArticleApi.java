@@ -12,7 +12,8 @@ public class ArticleApi extends BaseApi {
     }
 
     public Response createArticle(RootArticleResponse rootArticleResponse) {
-        logs.debug("creating article Api");
+        logs.info("Creating Article POST");
+
         return setResourcePath(path)
                 .setRequestBody(rootArticleResponse)
                 .apiCallManager(Method.POST);
