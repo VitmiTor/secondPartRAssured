@@ -3,13 +3,11 @@ package api;
 import base.BaseModel;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
-import utilities.Logs;
 import utilities.RequestManager;
 
 public class BaseApi {
     private final RequestManager requestManager;
-    protected final Logs logs = new Logs();
-
+    
     public BaseApi() {
         requestManager = new RequestManager();
     }

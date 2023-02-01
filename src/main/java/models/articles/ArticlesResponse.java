@@ -25,6 +25,7 @@ public class ArticlesResponse extends BaseModel {
         taglist = Arrays.asList("fideo", "jamon", "durazno");
     }
 
+    
     public String getTitle() {
         return title;
     }
